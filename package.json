@@ -1,0 +1,44 @@
+{
+  "name": "ludo-planung",
+  "version": "0.0.0",
+  "scripts": {
+    "start": "ng serve",
+    "build": "ng build",
+    "test": "ng test"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^16.2.3",
+    "@angular/cdk": "^16.2.2",
+    "@angular/common": "^16.2.3",
+    "@angular/compiler": "^16.2.3",
+    "@angular/core": "^16.2.3",
+    "@angular/forms": "^16.2.3",
+    "@angular/material": "^16.2.2",
+    "@angular/platform-browser": "^16.2.3",
+    "@angular/platform-browser-dynamic": "^16.2.3",
+    "@angular/router": "^16.2.3",
+    "@types/lodash": "^4.14.172",
+    "date-fns": "2.30.0",
+    "file-saver": "^2.0.5",
+    "lodash": "^4.17.21",
+    "rxjs": "~6.6.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.13.1"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^16.2.1",
+    "@angular/cli": "^16.2.1",
+    "@angular/compiler-cli": "^16.2.3",
+    "@types/file-saver": "^2.0.3",
+    "@types/jasmine": "~3.8.0",
+    "@types/node": "^12.11.1",
+    "jasmine-core": "~3.8.0",
+    "karma": "~6.3.0",
+    "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage": "~2.0.3",
+    "karma-jasmine": "~4.0.0",
+    "karma-jasmine-html-reporter": "~1.7.0",
+    "typescript": "~4.9.5"
+  }
+}

@@ -1,0 +1,85 @@
+<div class="container">
+    <h2>Ludo-Einsatzplanung</h2>
+    <p>
+        <small>By <a href="https://www.kleemans.ch">Adrianus Kleemans</a></small>
+    </p>
+
+    <div>
+        <h3></h3>
+    </div>
+
+    <div class="button-bar">
+        <button (click)="loadData()" mat-stroked-button color="primary"
+                [disabled]="appState !== appStateEnum.Initial">
+            <mat-icon>upload</mat-icon>
+            1. CSV laden
+        </button>
+        <button (click)="generateSchedule()" mat-stroked-button color="primary"
+                [disabled]="appState !== appStateEnum.Uploaded">
+            <mat-icon>auto_fix_high</mat-icon>
+            2. Lösungssuche
+        </button>
+        <button (click)="downloadData()" mat-stroked-button color="primary"
+                [disabled]="appState !== appStateEnum.Solved">
+            <mat-icon>save</mat-icon>
+            3. Export
+        </button>
+    </div>
+    <div *ngIf="appState === appStateEnum.Unsolvable">
+        Keine Lösung gefunden :(
+    </div>
+
+    <div *ngIf="basicVerificationErrors.length > 0" class="basic-verification">
+        <b>Achtung</b>:
+        <ul>
+            <li *ngFor="let error of basicVerificationErrors">{{ error }}</li>
+        </ul>
+    </div>
+
+    <div *ngIf="appState === appStateEnum.Uploaded">
+        <h2>Eingelesene CSV-Daten</h2>
+        <p>
+            <b>{{ dates.length }} Daten: </b>
+            <span *ngFor="let d of dates">{{ d }}, </span>
+        </p>
+
+        <p>
+            <b>{{ people.length }} Personen: </b>
+            <span *ngFor="let person of people">{{ person }}, </span>
+        </p>
+    </div>
+
+    <div *ngIf="appState >= appStateEnum.Solving">
+        <h2>Lösungssuche</h2>
+        <mat-spinner diameter="30" *ngIf="appState === appStateEnum.Solving"></mat-spinner>
+        <div *ngIf="schedule.length > 0">
+            Lösungen gefunden: {{ solutionCount }}
+            <ul>
+                <li>Score: {{ currentScore | number }} (tiefer = besser)</li>
+                <li>Zeitpunkt: {{ lastSolutionTime | date : 'HH:mm:ss' }}</li>
+            </ul>
+        </div>
+        <button mat-stroked-button (click)="stopSearch()"
+                [disabled]="appState !== appStateEnum.Solving">
+            Suche stoppen
+        </button>
+    </div>
+</div>
+
+<table *ngIf="appState >= appStateEnum.Solving && schedule.length > 0">
+    <tr>
+        <th>Name</th>
+        <th *ngFor="let date of dates">{{ date }}</th>
+        <th>Geplante Einsätze</th>
+        <th>Mögliche Einsätze</th>
+    </tr>
+    <tr *ngFor="let person of people; let personIndex = index">
+        <td>{{ person }}</td>
+        <td *ngFor="let date of dates; let dateIndex = index">
+            <span *ngIf="schedule[personIndex][dateIndex] === stateEnum.Planned" class="team team-one"> P </span>
+            <span *ngIf="schedule[personIndex][dateIndex] === stateEnum.Unplanned"> - </span>
+        </td>
+        <td>{{ playerTotal[personIndex] }}</td>
+        <td>{{ playerPossible[personIndex] }}</td>
+    </tr>
+</table>

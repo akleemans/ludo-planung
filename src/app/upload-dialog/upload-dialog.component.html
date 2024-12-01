@@ -1,0 +1,59 @@
+<h1 mat-dialog-title>CSV hochladen</h1>
+<div mat-dialog-content>
+    <!-- TODO first state date definition -->
+    <div *ngIf="uploadState === uploadStateEnum.Initial">
+        <h2>Daten definieren</h2>
+        <p>Bitte Start und Ende angeben:</p>
+        <mat-form-field appearance="outline">
+            <mat-label>Startdatum (Montag)</mat-label>
+            <input matInput [matDatepicker]="pickerStart" [(ngModel)]="startDate">
+            <mat-hint>DD.MM.YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="pickerStart"></mat-datepicker-toggle>
+            <mat-datepicker #pickerStart></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Enddatum (Sonntag)</mat-label>
+            <input matInput [matDatepicker]="pickerEnd" [(ngModel)]="endDate">
+            <mat-hint>DD.MM.YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+            <mat-datepicker #pickerEnd></mat-datepicker>
+        </mat-form-field>
+
+        <button mat-stroked-button (click)="generateDates()" [disabled]="dates.length > 0">Generieren</button>
+        <div class="date-container">
+            <div *ngFor="let date of dates" class="single-date">
+                <div>
+                    {{ date.dateStr }}
+                </div>
+                <button mat-icon-button color="primary" (click)="removeDate(date)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </div>
+        <h2>CSV hochladen</h2>
+        <p>
+            CSV mit Stammdaten hochladen. Format:
+        </p>
+        <pre>
+Name;minDuties;maxDuties;Di;Fr;Sa;Exclusions
+Adi;3;6;-;x;-;14.03.,13.06.,20.06.
+        </pre>
+        <div *ngIf="dates.length === 0">Bitte vor dem hochladen Daten definieren.</div>
+        <input type="file" #fileInput (change)="onFileSelected(fileInput.files)" [disabled]="dates.length === 0"/>
+    </div>
+    <mat-spinner *ngIf="uploadState === uploadStateEnum.Uploading"></mat-spinner>
+    <div *ngIf="uploadState === uploadStateEnum.Uploaded">
+        <h3>Upload erfolgreich</h3>
+        <p>
+            Die Daten können jetzt importiert werden. <br>
+            Du hast die Möglichkeit im nächsten Schritt zu überprüfen ob das Einlesen geklappt hast.
+        </p>
+    </div>
+    <div mat-dialog-actions style="justify-content: flex-end;">
+        <button mat-stroked-button (click)="dialogRef.close()" color="warn">Abbrechen</button>
+        <button mat-stroked-button [matDialogClose]="scheduleParameters" color="primary">
+            Laden
+        </button>
+    </div>
+</div>

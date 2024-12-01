@@ -1,0 +1,71 @@
+.container {
+  margin: 10px auto;
+  width: 730px;
+}
+
+h2 {
+  margin-bottom: 5px;
+}
+
+mat-icon {
+  cursor: pointer;
+}
+
+.button-bar {
+  display: flex;
+
+  button {
+    margin: 5px;
+  }
+
+  margin-top: 10px;
+}
+
+.team {
+  display: block;
+  text-align: center;
+
+  &.team-one {
+    background-color: orange;
+  }
+
+  &.team-two {
+    background-color: mediumseagreen;
+  }
+}
+
+table {
+  // font-family: arial, sans-serif;
+  border-collapse: collapse;
+  // width: 100%;
+  font-size: 12px;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 2px;
+}
+
+tr:nth-child(even) {
+  background-color: #eeeeee;
+}
+
+mat-spinner {
+  margin: auto;
+}
+
+.basic-verification {
+  color: red;
+  font-weight: 500;
+}
+
+.skip-form-field {
+  width: 60px;
+  height: 40px;
+  margin-top: 5px;
+}
+
+::ng-deep .mat-mdc-form-field-bottom-align {
+  display: none;
+}
