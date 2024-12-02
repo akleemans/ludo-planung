@@ -61,7 +61,7 @@ export class ScheduleService {
             const lastGuess = item![1];
             const possibleGuesses = this.calculateGuesses(currentGrid);
 
-            if (iterations % 10000 === 0) {
+            if (iterations % 100000 === 0) {
                 console.log('>> Iteration', iterations, 'minStack:', minStack, 'current stack size:', stack.length, 'stack:', stack.map(i => i[1]?.toString()));
                 minStack = 10000;
             }
@@ -155,7 +155,7 @@ export class ScheduleService {
         const alreadyPlanned = _.sum(grid[p].map(d => d === true ? 1 : 0));
 
         // TODO tested with 2-5, not sure what yields the best results
-        const personBusyFactor = 2;
+        const personBusyFactor = 5;
         let personBusyPercentage = alreadyPlanned / this.minDutiesPerPerson[p];
         personBusyPercentage = Math.min(personBusyPercentage, 1);
 

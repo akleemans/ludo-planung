@@ -141,24 +141,13 @@ export class AppComponent implements OnInit {
         });
     }
 
-    // TODO remove
-    private doBasicVerification(): void {
-        // Check dates if 8 slots are available
-        for (let i = 0; i < this.dates.length; i++) {
-            let count = 0;
-            for (let p = 0; p < this.people.length; p++) {
-                count += (this.availabilities[p][i] ? 1 : 0);
-            }
-
-            if (count < 8) {
-                let error = `Datum ${this.dates[i]} nicht möglich: Nur ${count} Personen können an diesem Tag spielen.
-        Setze Datum bei allen auf "Nein".`;
-
-                for (let p = 0; p < this.availabilities.length; p++) {
-                    this.availabilities[p][i] = false;
-                }
-                this.basicVerificationErrors.push(error);
+    public getPeopleForDate(dateIndex: number): string {
+        const people: string[] = [];
+        for (let p = 0; p < this.people.length; p++) {
+            if (this.schedule[p][dateIndex]) {
+                people.push(this.people[p]);
             }
         }
+        return people.join(', ');
     }
 }

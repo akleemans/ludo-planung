@@ -83,3 +83,16 @@
         <td>{{ playerPossible[personIndex] }}</td>
     </tr>
 </table>
+
+<table *ngIf="appState === appStateEnum.Solved" style="margin-top: 20px;">
+    <tr>
+        <th>Datum</th>
+        <th>Einsätze</th>
+    </tr>
+    <tr *ngFor="let date of dates; let dateIndex = index">
+        <td>{{ date }}</td>
+        <td>
+            {{ getPeopleForDate(dateIndex) }}
+        </td>
+    </tr>
+</table>
