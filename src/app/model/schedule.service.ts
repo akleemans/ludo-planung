@@ -153,7 +153,9 @@ export class ScheduleService {
         // 1. Calculate person-index
         // const stillPossible = _.sum(grid[p].map(d => d !== undefined ? 1 : 0));
         const alreadyPlanned = _.sum(grid[p].map(d => d === true ? 1 : 0));
-        const personBusyFactor = 5;
+
+        // TODO tested with 2-5, not sure what yields the best results
+        const personBusyFactor = 2;
         let personBusyPercentage = alreadyPlanned / this.minDutiesPerPerson[p];
         personBusyPercentage = Math.min(personBusyPercentage, 1);
 
@@ -276,7 +278,7 @@ export class ScheduleService {
         // 2. 2 open (possible) fields per date
         for (let d = 0; d < this.dateCount; d++) {
             let possibleDateCount = _.sum(grid.map(p => p[d] !== false ? 1 : 0));
-            if (possibleDateCount < this.DUTIES_PER_DAY && possibleDateCount > 0) {
+            if (possibleDateCount < this.DUTIES_PER_DAY) {
                 this.debugLog('Invalid: Date does not have 2 duties available anymore (only ', possibleDateCount, '):', this.dates[d]);
                 return false;
             }
@@ -329,7 +331,11 @@ export class ScheduleService {
     It will return higher scores for worse solutions. 0 would be an ideal score.
      */
     protected static getGridScore(grid: Grid): number {
-        // 1. Not too many outliers - removed for now, check if can be adapted?
+        // TODO this could be improved to include a factor to reflect the "perfect" amount of duties per
+        // person, for example "1-2x a month" -> 9 would be a perfect amount of duties (for 6 months time),
+        // 8 and 10 a bit less, and so on
+
+        // 1. Not too many outliers - removed for now
         /*
         const minMatches = Math.floor(this.dateCount * ScheduleService.DUTIES_PER_DAY / this.peopleCount);
         const maxMatches = minMatches + 1;
@@ -338,40 +344,8 @@ export class ScheduleService {
           return (score === minMatches || score === maxMatches) ? 1 : 0;
         }));*/
 
-        // 2. Not too many matches in same month
-        /*
-        const matchesInSameMonth = _.sum(grid.map(player => {
-            let s = 0;
-            for (let i = 0; i < player.length - 2; i++) {
-                const d0 = this.dates[i].trim();
-                const d1 = this.dates[i + 2].trim();
-                if (player[i] && player[i + 2] && this.inSameMonth(d0, d1)) {
-                    s += 1;
-                }
-            }
-            return s;
-        }));*/
-
-        const dutiesWithinAWeek = _.sum(grid.map(player => {
-            let s = 0;
-            for (let i = 0; i < player.length - 3; i++) {
-                if (player[i]) {
-                    if (player[i + 1]) {
-                        s += 1
-                    }
-                    if (player[i + 2]) {
-                        s += 1
-                    }
-                    if (player[i + 3]) {
-                        s += 1
-                    }
-                }
-            }
-            return s;
-        }));
-
-        // 3. Evenly distributed matches
-        const distributionModifier = 1 / 4; // used to be 1/4
+        // 2. Evenly distributed duties
+        const distributionModifier = 1 / 4;
         const distributionScore = _.sum(grid.map(p => {
             let data: number[] = [];
             for (let i = 0; i < p.length; i++) {
@@ -382,10 +356,13 @@ export class ScheduleService {
             return this.getDistributionScore(data, this.dateCount);
         })) * distributionModifier;
 
-        const score = dutiesWithinAWeek + distributionScore;
+        // const score = dutiesWithinAWeek + distributionScore;
+        const score = distributionScore;
+        /*
         if (score < this.lowestScore) {
             console.log('Solution score:', dutiesWithinAWeek, '/', distributionScore);
-        }
+        }*/
+
         return score;
     }
 
