@@ -66,33 +66,35 @@
     </div>
 </div>
 
-<table *ngIf="appState >= appStateEnum.Solving && schedule.length > 0">
-    <tr>
-        <th>Name</th>
-        <th *ngFor="let date of dates">{{ date }}</th>
-        <th>Geplante Einsätze</th>
-        <th>Mögliche Einsätze</th>
-    </tr>
-    <tr *ngFor="let person of people; let personIndex = index">
-        <td>{{ person }}</td>
-        <td *ngFor="let date of dates; let dateIndex = index">
-            <span *ngIf="schedule[personIndex][dateIndex] === stateEnum.Planned" class="team team-one"> P </span>
-            <span *ngIf="schedule[personIndex][dateIndex] === stateEnum.Unplanned"> - </span>
-        </td>
-        <td>{{ playerTotal[personIndex] }}</td>
-        <td>{{ playerPossible[personIndex] }}</td>
-    </tr>
-</table>
+<div *ngIf="appState >= appStateEnum.Solving && schedule.length > 0">
+    <table>
+        <tr>
+            <th>Name</th>
+            <th *ngFor="let date of dates">{{ date }}</th>
+            <th>Geplante Einsätze</th>
+            <th>Mögliche Einsätze</th>
+        </tr>
+        <tr *ngFor="let person of people; let personIndex = index">
+            <td>{{ person }}</td>
+            <td *ngFor="let date of dates; let dateIndex = index">
+                <span *ngIf="schedule[personIndex][dateIndex] === stateEnum.Planned" class="team team-one"> P </span>
+                <span *ngIf="schedule[personIndex][dateIndex] === stateEnum.Unplanned"> - </span>
+            </td>
+            <td>{{ playerTotal[personIndex] }}</td>
+            <td>{{ playerPossible[personIndex] }}</td>
+        </tr>
+    </table>
 
-<table *ngIf="appState === appStateEnum.Solved" style="margin-top: 20px;">
-    <tr>
-        <th>Datum</th>
-        <th>Einsätze</th>
-    </tr>
-    <tr *ngFor="let date of dates; let dateIndex = index">
-        <td>{{ date }}</td>
-        <td>
-            {{ getPeopleForDate(dateIndex) }}
-        </td>
-    </tr>
-</table>
+    <table style="margin-top: 20px;">
+        <tr>
+            <th>Datum</th>
+            <th>Einsätze</th>
+        </tr>
+        <tr *ngFor="let date of dates; let dateIndex = index">
+            <td>{{ date }}</td>
+            <td>
+                {{ getPeopleForDate(dateIndex) }}
+            </td>
+        </tr>
+    </table>
+</div>
